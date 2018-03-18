@@ -4,7 +4,7 @@
 
 Blockchain::Blockchain()
 {
-    new_block(nullptr, nullptr);
+    new_block(nullptr);
 }
 
 Blockchain::~Blockchain()
@@ -17,11 +17,14 @@ bool Blockchain::register_node(Node* node)
     return (nodes.insert(node)).second;
 }
 
-bool Blockchain::valid_chain()//static or member?
+bool Blockchain::valid_chain(std::list<Block*> chain)//static or member?
 {
-    for(auto it = chain.crbegin(); it != chain.crend(); it--)
+    for(auto it = chain.cbegin()++, last_it = chain.cbegin(); it != chain.cend(); it++, last_it++)
     {
-        if(valid_proof((*it)->get_proof(), (*it)->get_previous_hash()))
+        if((*it)->get_previous_hash() != hash(*last_it))
+            return false;
+
+        if(valid_proof(hash((*it)->get_proof()), (*it)->get_previous_hash()))
         {
             return false;
         }
@@ -32,21 +35,20 @@ bool Blockchain::valid_chain()//static or member?
 
 bool Blockchain::resolve_conflicts()
 {
-    for(std::vector<Node*>:iterator it = nodes.begin; it != nodes.end; it++)
+    for(auto it = nodes.begin(); it != nodes.end(); it++)
     {
-        //
-        if(*it->chian.length > this->chain.length && *it->valid_chain())
+        if((*it)->get_chain().size() > this->chain.size() && valid_chain((*it)->get_chain()))
         {
-            this->chain = *it->chian;
+            this->chain = (*it)->get_chain();
         } 
     }
 
     return true;
 }
 
-void Blockchain::new_block(Proof* proof, std::vector<Transaction*>& transactions)
+void Blockchain::new_block(Proof* proof)
 {
-    Block* block = new Block(proof, transactions);
+    Block* block = new Block(proof, &current_transactions, hash(last_block()));
     chain.push_back(block);
 }
 
@@ -56,21 +58,36 @@ int Blockchain::new_transaction(Transaction* transaction)
     return chain.size();
 }
 
-std::string Blockchain::hash(std::string str)
+size_t Blockchain::hash(std::string str)
 {
     std::hash<std::string> hashfun_str;
     return hashfun_str(str);
 }
 
+size_t Blockchain::hash(size_t sizet)
+{
+
+}
+
+size_t Blockchain::hash(Block* block)
+{
+
+}
+
+size_t Blockchain::hash(Proof* proof)
+{
+
+}
+
 Block* Blockchain::last_block()
 {
-    return *chain.end;
+    return *chain.end();
 }
 
 Proof* Blockchain::proof_of_work()
 {
     Proof* proof = new Proof();
-    while(!valid_proof(last_block(), proof))
+    while(!valid_proof(hash(last_block()), hash(proof)))
     {
         proof->change();
     }
@@ -78,8 +95,15 @@ Proof* Blockchain::proof_of_work()
     return proof;
 }
 
-bool Blockchain::valid_proof(std::string str1, std::string str2)
+bool Blockchain::valid_proof(size_t hash1, size_t hash2)
 {
-    std::string hash_str = hash(str1 + str2);
-    return hash_str.find("0000") == hash_str.begin();
+    size_t hash3 = hash(hash1 + hash2);
+    return hash3 / 10000 * 10000 == hash3;
+}
+
+std::string Blockchain::get_chain()
+{
+    char buf[256] = {0};
+    sprintf(buf, "%d", chain.size());
+    return *new std::string(buf);
 }
