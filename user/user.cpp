@@ -9,7 +9,8 @@
 int main(int argc, char** argv)
 {
     int sockfd, n;
-    char buff[256] = "hello? do you here me?", recvline[256];//+1?
+    char buff[256], recvline[256];//+1?
+    strcpy(buff, argv[2]);
     struct sockaddr_in servaddr;
 
     sockfd = socket(AF_INET, SOCK_STREAM, 0);

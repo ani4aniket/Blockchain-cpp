@@ -45,17 +45,23 @@ void App::run()
 
         while((n = read(connfd, recvline, 256) > 0))
         {
-            //printf("1. read: %d -- buff: %s \n", n, recvline);
+            printf("1. read: %d -- buff_szie : %d, buff: %s \n", n, strlen(recvline), recvline);
+            printf("debug line49");
             std::string str(recvline);
+            printf("debug line50");
             std::string request = parse_request(str);
             std::string param = parse_param(str);
+            printf("debug line52");
             std::map<std::string, int> map;
             map["mine"] = 0;
             map["new_transaction"] = 1;
             map["full_chain"] = 2;
             map["register_nodes"] = 3;
             map["consensus"] = 4;
-            switch(map.find(request)->second)
+
+            auto it = map.find(request);
+            printf("debug line60");
+            switch(it != map.end() ? it->second : -1)
             {
                 case 0 :
                 {
@@ -69,6 +75,7 @@ void App::run()
                 }
                 case 2 :
                 {
+                    printf("debug line74");
                     full_chain();
                     break;
                 }
