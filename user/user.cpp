@@ -11,6 +11,7 @@ int main(int argc, char** argv)
     int sockfd, n;
     char buff[256], recvline[256];//+1?
     strcpy(buff, argv[2]);
+    printf("argv[2] is %s, size is %d\n", buff, strlen(buff));
     struct sockaddr_in servaddr;
 
     sockfd = socket(AF_INET, SOCK_STREAM, 0);

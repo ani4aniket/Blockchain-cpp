@@ -101,9 +101,12 @@ bool Blockchain::valid_proof(size_t hash1, size_t hash2)
     return hash3 / 10000 * 10000 == hash3;
 }
 
-std::string Blockchain::get_chain()
+std::vector<std::string> Blockchain::get_chain()
 {
-    char buf[256] = {0};
-    sprintf(buf, "%d", chain.size());
-    return *new std::string(buf);
+    std::vector<std::string> str_vector;
+    for(auto it = chain.begin(); it != chain.end(); it++)//for :in?
+    {
+        str_vector.push_back((*it)->string());
+    }
+    return str_vector;
 }

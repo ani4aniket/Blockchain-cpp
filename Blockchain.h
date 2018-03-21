@@ -25,7 +25,7 @@ class Transaction {
     public:
 
     Transaction();
-    
+
     Transaction(std::string sender, std::string recipient, int mount);
 
     virtual ~Transaction();
@@ -50,6 +50,8 @@ class Block {
     Proof* get_proof() const;
 
     size_t get_previous_hash() const;
+
+    std::string string() const;
 
     private:
 
@@ -117,7 +119,7 @@ Proof* proof_of_work();
 
 bool valid_proof(size_t proof, size_t previous_hash);
 
-std::string get_chain();
+std::vector<std::string> get_chain();
 
 private:
 std::vector<Transaction*> current_transactions;

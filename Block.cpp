@@ -24,3 +24,8 @@ size_t Block::get_previous_hash() const
 {
     return previous_hash;
 }
+
+std::string Block::string() const
+{
+    return std::string("");
+}

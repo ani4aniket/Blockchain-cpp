@@ -9,6 +9,7 @@
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <map>
+#include <iostream>
 
 App::App()
 // : my_blockchain?
@@ -43,15 +44,20 @@ void App::run()
         connfd = accept(listenfd, (sockaddr*)NULL, NULL);
         printf("accept sonnfd: %d\n", connfd);
 
+        // n = read(connfd, recvline, 256);
+        // printf("n is %d, %d, %s\n", n, strlen(recvline), recvline);
+
         while((n = read(connfd, recvline, 256) > 0))
         {
-            printf("1. read: %d -- buff_szie : %d, buff: %s \n", n, strlen(recvline), recvline);
-            printf("debug line49");
+            printf("read: %d -- buff_szie : %d, buff: %s \n", n, strlen(recvline), recvline);
+            printf("debug line49");std::cout<<std::endl;
             std::string str(recvline);
-            printf("debug line50");
+            memset(recvline, 0, sizeof(recvline));
+            printf("debug line50");std::cout<<std::endl;
             std::string request = parse_request(str);
+            std::cout<<"debug line57"<<std::endl;
             std::string param = parse_param(str);
-            printf("debug line52");
+            printf("debug line52");std::cout<<std::endl;
             std::map<std::string, int> map;
             map["mine"] = 0;
             map["new_transaction"] = 1;
@@ -59,8 +65,10 @@ void App::run()
             map["register_nodes"] = 3;
             map["consensus"] = 4;
 
+            std::cout<<"debug line66  "<<request<<std::endl;
+
             auto it = map.find(request);
-            printf("debug line60");
+            printf("debug line60");std::cout<<std::endl;
             switch(it != map.end() ? it->second : -1)
             {
                 case 0 :
@@ -75,7 +83,7 @@ void App::run()
                 }
                 case 2 :
                 {
-                    printf("debug line74");
+                    printf("debug line74");std::cout<<std::endl;
                     full_chain();
                     break;
                 }
@@ -91,7 +99,7 @@ void App::run()
                 }
                 default :
                 {
-                    printf("do noting!\n");
+                    printf("do noting!\n");std::cout<<std::endl;
                     break;
                 }
             }
@@ -116,7 +124,7 @@ void App::new_transaction(std::string param)
 
 void App::full_chain()
 {
-    printf("full chain : %s\n", my_blockchain->get_chain());
+    printf("full chain : %s\n", my_blockchain->get_chain());std::cout<<std::endl;
 }
 
 void App::register_nodes(std::string param)
@@ -131,10 +139,10 @@ void App::consensus()
 
 std::string App::parse_request(std::string str)
 {
-
+    return str.assign(str, 0, str.find(" "));
 }
 
 std::string App::parse_param(std::string str)
 {
-
+    return str.assign(str, str.find(" ") == std::string::npos ? str.size() : str.find(" "), std::string::npos);
 }
