@@ -14,6 +14,8 @@ class Proof {
 
     std::string string();
 
+    operator std::string() const;
+
     void change();
 
     private:
@@ -29,6 +31,8 @@ class Transaction {
     Transaction(std::string sender, std::string recipient, int mount);
 
     virtual ~Transaction();
+
+    operator std::string() const;
 
     private:
 

@@ -1,5 +1,7 @@
 #include "Blockchain.h"
 
+#include <sstream>
+
 Block::Block()
 {
 
@@ -27,5 +29,13 @@ size_t Block::get_previous_hash() const
 
 std::string Block::string() const
 {
-    return std::string("");
+    std::stringstream strstream;
+    strstream << "index : " << index << std::endl;
+    strstream << "timestamp : " << timestamp << std::endl;
+    strstream << "proof : " << proof << std::endl;
+    strstream << "previous_hash : " << previous_hash << std::endl;
+    for(auto i = 0; i != transactions.size(); i++)
+        strstream << "transaction " << i << " : " << *transactions[i] << std::endl;
+
+    return strstream.str();
 }
