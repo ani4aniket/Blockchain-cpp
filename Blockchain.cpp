@@ -4,7 +4,7 @@
 
 Blockchain::Blockchain()
 {
-    new_block(nullptr);
+    new_block(new Proof());
 }
 
 Blockchain::~Blockchain()
@@ -48,7 +48,7 @@ bool Blockchain::resolve_conflicts()
 
 void Blockchain::new_block(Proof* proof)
 {
-    Block* block = new Block(proof, &current_transactions, hash(last_block()));
+    Block* block = new Block(proof, &current_transactions, hash(last_block()), chain.size() + 1);
     chain.push_back(block);
 }
 

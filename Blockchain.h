@@ -7,6 +7,9 @@
 #define BLOCKCHAIN_H
 
 class Proof {
+
+    friend std::ostream& operator<<(std::ostream& os, const Proof& proof);
+
     public:
     Proof();
 
@@ -24,6 +27,9 @@ class Proof {
 };
 
 class Transaction {
+
+    friend std::ostream& operator<<(std::ostream& os, const Transaction& transaction); 
+
     public:
 
     Transaction();
@@ -47,7 +53,7 @@ class Block {
     public:
     Block();
 
-    Block(Proof* proof, const std::vector<Transaction*>* transactions, size_t previous_hash);//const ?
+    Block(Proof* proof, const std::vector<Transaction*>* transactions, size_t previous_hash, int index);//const ?
 
     virtual ~Block();
 
@@ -63,7 +69,7 @@ class Block {
 
     std::vector<Transaction*> transactions;
 
-    std::string timestamp;
+    long long timestamp;
 
     int index;
 

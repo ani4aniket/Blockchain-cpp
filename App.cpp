@@ -50,14 +50,14 @@ void App::run()
         while((n = read(connfd, recvline, 256) > 0))
         {
             printf("read: %d -- buff_szie : %d, buff: %s \n", n, strlen(recvline), recvline);
-            printf("debug line49");std::cout<<std::endl;
+            // printf("debug line49");std::cout<<std::endl;
             std::string str(recvline);
             memset(recvline, 0, sizeof(recvline));
-            printf("debug line50");std::cout<<std::endl;
+            // printf("debug line50");std::cout<<std::endl;
             std::string request = parse_request(str);
-            std::cout<<"debug line57"<<std::endl;
+            // std::cout<<"debug line57"<<std::endl;
             std::string param = parse_param(str);
-            printf("debug line52");std::cout<<std::endl;
+            // printf("debug line52");std::cout<<std::endl;
             std::map<std::string, int> map;
             map["mine"] = 0;
             map["new_transaction"] = 1;
@@ -65,10 +65,10 @@ void App::run()
             map["register_nodes"] = 3;
             map["consensus"] = 4;
 
-            std::cout<<"debug line66  "<<request<<std::endl;
+            // std::cout<<"debug line66  "<<request<<std::endl;
 
             auto it = map.find(request);
-            printf("debug line60");std::cout<<std::endl;
+            // printf("debug line60");std::cout<<std::endl;
             switch(it != map.end() ? it->second : -1)
             {
                 case 0 :
@@ -78,12 +78,13 @@ void App::run()
                 }
                 case 1 :
                 {
+                    std::cout << "receive new_transaction request!" << std::endl;
                     new_transaction(param);
                     break;
                 }
                 case 2 :
                 {
-                    printf("debug line74");std::cout<<std::endl;
+                    printf("receive full_chain request!");std::cout<<std::endl;
                     full_chain();
                     break;
                 }
@@ -103,7 +104,6 @@ void App::run()
                     break;
                 }
             }
-
         }
 
         close(connfd);
@@ -119,12 +119,21 @@ void App::mine(std::string param)
 
 void App::new_transaction(std::string param)
 {
-
+    std::string sender(param, 0, param.find(" "));
+    param.assign(param.find(" "), std::string::npos);
+    std::string recipient(param, 0, param.find(" "));
+    param.assign(param.find(" "), std::string::npos);
+    int mount = atoi(param.c_str());
+    //TODO
 }
 
 void App::full_chain()
 {
-    printf("full chain : %s\n", my_blockchain->get_chain());std::cout<<std::endl;
+    auto str_vector = my_blockchain->get_chain();
+    for(auto it = str_vector.begin(); it != str_vector.end(); it++)
+    {
+        std::cout << *it << std::endl;
+    }
 }
 
 void App::register_nodes(std::string param)
