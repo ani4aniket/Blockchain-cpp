@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv)
 {
-    (new App())->run();
+    (new App())->run(argv[1]);
 
     return 0;
 }

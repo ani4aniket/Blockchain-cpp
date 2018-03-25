@@ -10,7 +10,7 @@ int main(int argc, char** argv)
 {
     int sockfd, n;
     char buff[256], recvline[256];//+1?
-    strcpy(buff, argv[2]);
+    strcpy(buff, argv[3]);
     printf("argv[2] is %s, size is %d\n", buff, strlen(buff));
     struct sockaddr_in servaddr;
 
@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 
     memset(&servaddr, 0, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(5000);
+    servaddr.sin_port = htons(atoi(argv[2]));
 
     inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
 

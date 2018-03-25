@@ -24,6 +24,8 @@ class Proof {
     private:
 
     std::string proof_str;
+
+    long long proof_ll;
 };
 
 class Transaction {
@@ -80,6 +82,8 @@ class Node {
     public:
     Node();
 
+    Node(std::string ip_port);
+
     virtual ~Node();
 
     std::list<Block*>& get_chain() const;
@@ -95,7 +99,7 @@ class Node {
     std::string string() const;
 
     private:
-    std::string url;
+    std::string ip_port;
 };
 
 class Blockchain {

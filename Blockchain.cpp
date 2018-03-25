@@ -1,6 +1,7 @@
 #include "Blockchain.h"
 
 #include <functional>
+#include <iostream>
 
 Blockchain::Blockchain()
 {
@@ -14,6 +15,9 @@ Blockchain::~Blockchain()
 
 bool Blockchain::register_node(Node* node)
 {
+    for(auto it = nodes.begin(); it != nodes.end(); it++)
+        std::cout << "node: " << (*it)->string() << std::endl;
+
     return (nodes.insert(node)).second;
 }
 
@@ -33,6 +37,7 @@ bool Blockchain::valid_chain(std::list<Block*> chain)//static or member?
     return true;
 }
 
+//TODO (return replaced): return true: Our chain was replaced, return false: Our chain is authoritative
 bool Blockchain::resolve_conflicts()
 {
     for(auto it = nodes.begin(); it != nodes.end(); it++)
@@ -49,6 +54,7 @@ bool Blockchain::resolve_conflicts()
 void Blockchain::new_block(Proof* proof)
 {
     Block* block = new Block(proof, &current_transactions, hash(last_block()), chain.size() + 1);
+    current_transactions.clear();
     chain.push_back(block);
 }
 
@@ -71,17 +77,25 @@ size_t Blockchain::hash(size_t sizet)
 
 size_t Blockchain::hash(Block* block)
 {
+    if(!block)
+        return 0;
 
+    std::hash<std::string> hashfun_str;
+    return hashfun_str(block->string());
 }
 
 size_t Blockchain::hash(Proof* proof)
 {
-
+    std::hash<std::string> hashfun_str;
+    return hashfun_str(*proof);
 }
 
 Block* Blockchain::last_block()
 {
-    return *chain.end();
+    if(chain.size() == 0)
+        return nullptr;
+
+    return chain.back();
 }
 
 Proof* Blockchain::proof_of_work()
@@ -98,7 +112,8 @@ Proof* Blockchain::proof_of_work()
 bool Blockchain::valid_proof(size_t hash1, size_t hash2)
 {
     size_t hash3 = hash(hash1 + hash2);
-    return hash3 / 10000 * 10000 == hash3;
+    // std::cout << "debug line 109, hash3 is " << hash3 << " ** " << hash3 / 100 << std::endl;
+    return hash3 / 100 * 100 == hash3;
 }
 
 std::vector<std::string> Blockchain::get_chain()
