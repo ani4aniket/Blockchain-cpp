@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <iostream>
+#include <sstream>
 
 Blockchain::Blockchain()
 {
@@ -119,9 +120,11 @@ bool Blockchain::valid_proof(size_t hash1, size_t hash2)
 std::vector<std::string> Blockchain::get_chain()
 {
     std::vector<std::string> str_vector;
+    std::stringstream ss;
     for(auto it = chain.begin(); it != chain.end(); it++)//for :in?
     {
         str_vector.push_back((*it)->string());
+        ss << (*it)->string();
     }
     return str_vector;
 }
