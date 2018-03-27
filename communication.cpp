@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <arpa/inet.h>
 
-void send_message(const std::string& ip, const std::string& port, const std::string& message, const std::string& receive_port)
+void send_message(const std::string& sendto_ip, const std::string& sendto_port, const std::string& message, const std::string& receive_ip, const std::string& receive_port)
 {
     int sockfd, n;
     char buff[256], recvline[256];//+1?

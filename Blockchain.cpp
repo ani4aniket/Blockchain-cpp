@@ -43,10 +43,10 @@ bool Blockchain::resolve_conflicts()
 {
     for(auto it = nodes.begin(); it != nodes.end(); it++)
     {
-        if((*it)->get_chain().size() > this->chain.size() && valid_chain((*it)->get_chain()))
-        {
-            this->chain = (*it)->get_chain();
-        } 
+        // if((*it)->get_chain().size() > this->chain.size() && valid_chain((*it)->get_chain()))
+        // {
+        //     this->chain = (*it)->get_chain();
+        // } 
     }
 
     return true;
