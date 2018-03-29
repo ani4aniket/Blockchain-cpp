@@ -11,6 +11,8 @@
 #include <map>
 #include <iostream>
 
+void send_message(const std::string& sendto_ip, const std::string& sendto_port, const std::string& message, const std::string& receive_ip, const std::string& receive_port);
+
 App::App()
 // : my_blockchain?
 {
@@ -138,13 +140,16 @@ void App::new_transaction(std::string param)
     my_blockchain->new_transaction(new_transaction);
 }
 
-void App::full_chain()
+void App::full_chain(std::string response_ip_port)
 {
+    std::stringstream ss;
     auto str_vector = my_blockchain->get_chain();
     for(auto it = str_vector.begin(); it != str_vector.end(); it++)
     {
         std::cout << *it << std::endl;
+        ss << *it << std::endl;
     }
+    send_message(response_ip, response_port, ss.str().c_str(), "", "");
 }
 
 //TODO : add more nodes for once
