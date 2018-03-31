@@ -13,6 +13,8 @@ class Proof {
     public:
     Proof();
 
+    Proof(std::string proof_str);
+
     virtual ~Proof();
 
     std::string string();
@@ -57,6 +59,8 @@ class Block {
 
     Block(Proof* proof, const std::vector<Transaction*>* transactions, size_t previous_hash, int index);//const ?
 
+    Block(int index, int timestamp, Proof* proof, int previous_hash, std::vector<Transaction*> transactions);
+
     virtual ~Block();
 
     Proof* get_proof() const;
@@ -67,15 +71,15 @@ class Block {
 
     private:
 
-    size_t previous_hash;
-
-    std::vector<Transaction*> transactions;
+    int index;
 
     long long timestamp;
 
-    int index;
-
     Proof proof;
+
+    size_t previous_hash;
+
+    std::vector<Transaction*> transactions;
 };
 
 class Node {
@@ -83,6 +87,8 @@ class Node {
     Node();
 
     Node(std::string ip_port);
+
+    Node(std::string ip, std::string port);
 
     virtual ~Node();
 
@@ -98,14 +104,24 @@ class Node {
 
     std::string string() const;
 
+    std::string get_ip() const;
+
+    std::string get_port() const;
+
     private:
     std::string ip_port;
+
+    std::string ip;
+
+    std::string port;
 };
 
 class Blockchain {
 
 public:
-Blockchain();//init
+Blockchain();
+
+Blockchain(Node* node);
 
 virtual ~Blockchain();
 
@@ -141,6 +157,8 @@ std::vector<Transaction*> current_transactions;
 std::list<Block*> chain;
 
 std::set<Node*, Node::classcomp> nodes;
+
+Node self;
 
 };
 

@@ -11,6 +11,13 @@ Proof::Proof()
 
 }
 
+Proof::Proof(std::string proof_str)
+: proof_str(proof_str)
+, proof_ll(0)
+{
+    
+}
+
 Proof::~Proof()
 {
 

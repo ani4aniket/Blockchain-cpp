@@ -17,6 +17,16 @@ Block::Block(Proof* proof, const std::vector<Transaction*>* transactions, size_t
     this->timestamp = time(nullptr);
 }
 
+Block::Block(int index, int timestamp, Proof* proof, int previous_hash, std::vector<Transaction*> transactions)
+: index(index)
+, timestamp(timestamp)
+, proof(*proof)
+, previous_hash(previous_hash)
+, transactions(transactions)
+{
+
+}
+
 Block::~Block()
 {
     

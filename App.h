@@ -6,6 +6,8 @@ class App {
 public:
 App();
 
+App(std::string ip, std::string port);
+
 virtual ~App();
 
 void run(std::string listen_port);
@@ -16,7 +18,7 @@ void mine(std::string param);
 
 void new_transaction(std::string param);
 
-void full_chain(); 
+void full_chain(std::string param); 
 
 void register_nodes(std::string param);
 
