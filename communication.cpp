@@ -69,7 +69,7 @@ std::string receive_message(std::string listen_port)
 
         while((n = read(connfd, recvline, 256) > 0))
         {
-            printf("read: %d -- buff_szie : %d, buff: %s \n", n, strlen(recvline), recvline);
+            //printf("read: %d -- buff_szie : %d, buff: %s \n", n, strlen(recvline), recvline);
             // printf("debug line49");std::cout<<std::endl;
             std::string str(recvline);
             memset(recvline, 0, sizeof(recvline));

@@ -63,7 +63,7 @@ bool Blockchain::resolve_conflicts()
         std::cout << "debug L63" << std::endl;
         std::string full_chain = receive_message("6001");
 
-        // std::cout << "debug l63 " << full_chain << std::endl;
+        std::cout << "Blockchain.cpp debug l66 " << full_chain << std::endl;
 
         std::list<Block*> blocks;
 
@@ -72,19 +72,20 @@ bool Blockchain::resolve_conflicts()
         std::smatch m_proof;
         std::smatch m_previous_hash;
         std::smatch m_transaction;
-        std::regex index("index : ([0-9]+) ");
-        std::regex timestamp("timestamp : ([0-9]+) ");
-        std::regex proof("proof : (.+) ");
-        std::regex previous_hash("previous_hash : (.+) ");
+        std::regex index("index : ([0-9]+)");
+        std::regex timestamp("timestamp : ([0-9]+)");
+        std::regex proof("proof : (.+)");
+        std::regex previous_hash("previous_hash : (.+)");
         std::regex transaction("transaction : (.+)$");
 
         std::smatch m_chain;
         std::regex reg_chain("(index.+)(index | $)");
 
-        std::regex_search(full_chain, m_chain, reg_chain);
+        std::cout << "debug L84 " << std::regex_search(full_chain, m_chain, reg_chain) << std::endl;
 
         while(std::regex_search(full_chain, m_chain, reg_chain))
         {
+            std::cout << "debug L86 " << m_chain.str(1) <<std::endl;
             //std::regex_search(m_chain.str(1), m_index, index);使用了被删除的函数？
             std::string m_chain_str1 = m_chain.str(1);
             std::regex_search(m_chain_str1, m_index, index);
@@ -96,9 +97,9 @@ bool Blockchain::resolve_conflicts()
             std::smatch m_sender;
             std::smatch m_recipient;
             std::smatch m_mount;
-            std::regex sender("sender : (.+) ");
-            std::regex recipient("recipient : (.+) ");
-            std::regex mount("mount : ([0-9]+) ");
+            std::regex sender("sender : (.+)");
+            std::regex recipient("recipient : (.+)");
+            std::regex mount("mount : ([0-9]+)");
 
             std::string transactions = m_transaction.str(1);
             std::regex one_line("(sender.+mount)");
@@ -108,6 +109,8 @@ bool Blockchain::resolve_conflicts()
 
             while(std::regex_search(transactions, m_line, one_line))
             {
+                std::cout << "debug L110 " << m_line.str(1) <<std::endl;
+
                 std::string m_line_str1 = m_line.str(1);
                 std::regex_search(m_line_str1, m_sender, sender);
                 std::regex_search(m_line_str1, m_recipient, recipient);
