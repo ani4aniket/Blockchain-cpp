@@ -79,11 +79,11 @@ bool Blockchain::resolve_conflicts()
         std::regex transaction("transaction : (.+)$");
 
         std::smatch m_chain;
-        std::regex reg_chain("(index.+)(index | $)");
+        std::regex reg_block("(index[\\s\\S]+\\n\\n)");
 
-        std::cout << "debug L84 " << std::regex_search(full_chain, m_chain, reg_chain) << std::endl;
+        std::cout << "debug L84 " << std::regex_search(full_chain, m_chain, reg_block) << std::endl;
 
-        while(std::regex_search(full_chain, m_chain, reg_chain))
+        while(std::regex_search(full_chain, m_chain, reg_block))
         {
             std::cout << "debug L86 " << m_chain.str(1) <<std::endl;
             //std::regex_search(m_chain.str(1), m_index, index);使用了被删除的函数？
