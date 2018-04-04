@@ -94,6 +94,12 @@ bool Blockchain::resolve_conflicts()
             std::regex_search(m_chain_str1, m_previous_hash, previous_hash);
             std::regex_search(m_chain_str1, m_transaction, transaction);
 
+            // std::cout << "m_index match is: \n" << m_index.str(1) << std::endl;
+            // std::cout << "m_timestamp match is: \n" << m_timestamp.str(1) << std::endl;
+            // std::cout << "m_proof match is: \n" << m_proof.str(1) << std::endl;
+            // std::cout << "m_previous_hash match is: \n" << m_previous_hash.str(1) << std::endl;
+            // std::cout << "m_transaction match is: \n" << m_transaction.str(1) << std::endl;
+
             std::smatch m_sender;
             std::smatch m_recipient;
             std::smatch m_mount;
@@ -115,6 +121,10 @@ bool Blockchain::resolve_conflicts()
                 std::regex_search(m_line_str1, m_sender, sender);
                 std::regex_search(m_line_str1, m_recipient, recipient);
                 std::regex_search(m_line_str1, m_mount, mount);
+
+                // std::cout << "m_sender match is: \n" << m_sender.str(1) << std::endl;
+                // std::cout << "m_recipient match is: \n" << m_recipient.str(1) << std::endl;
+                // std::cout << "m_mount match is: \n" << m_mount.str(1) << std::endl;
 
                 transaction_vector->push_back(new Transaction(m_sender.str(1), m_recipient.str(1), stoi(m_mount.str(1))));
 

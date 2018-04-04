@@ -5,7 +5,7 @@
 #include <iostream>
 
 Proof::Proof()
-: proof_str("null")
+: proof_str("0")
 , proof_ll(0)
 {
 
@@ -44,7 +44,7 @@ void Proof::change()
 std::ostream& operator<<(std::ostream& os, const Proof& proof)
 {
     std::stringstream ss;
-    ss << " " << proof.proof_str;
+    ss << proof.proof_str;
     os << ss.str();
     return os;
 }
