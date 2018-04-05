@@ -53,14 +53,14 @@ void App::run(std::string listen_port)
     {
         std::cout << "******************LISTENING******************" << std::endl;
         connfd = accept(listenfd, (sockaddr*)NULL, NULL);
-        printf("accept sonnfd: %d\n", connfd);
+        // printf("accept sonnfd: %d\n", connfd);
 
         // n = read(connfd, recvline, 256);
         // printf("n is %d, %d, %s\n", n, strlen(recvline), recvline);
 
         while((n = read(connfd, recvline, 256) > 0))
         {
-            printf("read: %d -- buff_szie : %d, buff: %s \n", n, strlen(recvline), recvline);
+            // printf("read: %d -- buff_szie : %d, buff: %s \n", n, strlen(recvline), recvline);
             // printf("debug line49");std::cout<<std::endl;
             std::string str(recvline);
             memset(recvline, 0, sizeof(recvline));
@@ -98,7 +98,7 @@ void App::run(std::string listen_port)
                 {
                     printf("receive full_chain request!");std::cout<<std::endl;
                     full_chain(param);
-                    std::cout << "debug L99" << std::endl;
+                    // std::cout << "debug L99" << std::endl;
                     break;
                 }
                 case 3 :
@@ -121,11 +121,11 @@ void App::run(std::string listen_port)
             }
         }
 
-        std::cout << "debug L122" << std::endl;
+        // std::cout << "debug L122" << std::endl;
 
         close(connfd);
 
-        std::cout << "debug L126" << std::endl;
+        // std::cout << "debug L126" << std::endl;
     }
 }
 

@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <ctime>
+#include <iostream>
 
 Block::Block()
 {
@@ -17,14 +18,15 @@ Block::Block(Proof* proof, const std::vector<Transaction*>* transactions, size_t
     this->timestamp = time(nullptr);
 }
 
-Block::Block(int index, int timestamp, Proof* proof, int previous_hash, std::vector<Transaction*> transactions)
+Block::Block(size_t index, size_t timestamp, Proof* proof, size_t previous_hash, std::vector<Transaction*> transactions)
 : index(index)
 , timestamp(timestamp)
 , proof(*proof)
 , previous_hash(previous_hash)
 , transactions(transactions)
 {
-
+    // std::cout << "debug L28 index: " << index << " previous_hash: " << previous_hash << std::endl;
+    // std::cout << "debug L29: " << this->previous_hash << std::endl;
 }
 
 Block::~Block()
@@ -32,9 +34,9 @@ Block::~Block()
     
 }
 
-Proof* Block::get_proof() const
+const Proof* Block::get_proof() const
 {
-
+    return &proof;
 }
 
 size_t Block::get_previous_hash() const
@@ -54,4 +56,9 @@ std::string Block::string() const
         strstream << "    transaction " << i << " : " << *transactions[i] << std::endl;
 
     return strstream.str();
+}
+
+int Block::get_index() const
+{
+    return index;
 }

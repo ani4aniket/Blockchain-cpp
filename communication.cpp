@@ -10,15 +10,15 @@
 
 void send_message(const std::string& sendto_ip, const std::string& sendto_port, const std::string& message, const std::string& receive_ip, const std::string& receive_port)
 {
-    std::cout << "debug l12, " << sendto_ip.size() << " " << sendto_port.size() << std::endl;
+    // std::cout << "debug l12, " << sendto_ip.size() << " " << sendto_port.size() << std::endl;
     int sockfd, n;
-    char buff[256], recvline[256];//+1?
+    char buff[4096], recvline[4092];//+1?
     strcpy(buff, message.c_str());
-    printf("message is %s, size is %d\n", buff, strlen(buff));
+    // printf("message is %s, size is %d\n", buff, strlen(buff));
     struct sockaddr_in servaddr;
 
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    std::cout << "debug l20" << std::endl;
+    // std::cout << "debug l20" << std::endl;
 
     memset(&servaddr, 0, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
@@ -28,22 +28,22 @@ void send_message(const std::string& sendto_ip, const std::string& sendto_port, 
 
     connect(sockfd, (sockaddr*)&servaddr, sizeof(servaddr));
 
-    std::cout << "debug l30, write to " << sendto_ip << " " << sendto_port << std::endl;
+    // std::cout << "debug l30, write to " << sendto_ip << " " << sendto_port << std::endl;
 
     write(sockfd, buff, strlen(buff));
 
     close(sockfd);//if do not close it will block ?
 
-    std::cout << "debug L35" << std::endl;
+    // std::cout << "debug L35" << std::endl;
 }
 
 std::string receive_message(std::string listen_port)
 {
-    std::cout << "debug L42 " << listen_port << std::endl;
+    // std::cout << "debug L42 " << listen_port << std::endl;
 
     int listenfd, connfd, n;
     struct sockaddr_in servaddr;
-    char buff[256], recvline[256];
+    char buff[4092], recvline[4092];
 
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -56,18 +56,18 @@ std::string receive_message(std::string listen_port)
 
     listen(listenfd, 1024);
 
-    std::cout << "debug L59" << std::endl;
+    // std::cout << "debug L59" << std::endl;
 
     for(;;)
     {
-        std::cout << "debug L63, listen on " << listen_port << std::endl;
+        // std::cout << "debug L63, listen on " << listen_port << std::endl;
         connfd = accept(listenfd, (sockaddr*)NULL, NULL);
-        printf("accept sonnfd: %d\n", connfd);
+        // printf("accept sonnfd: %d\n", connfd);
 
         // n = read(connfd, recvline, 256);
         // printf("n is %d, %d, %s\n", n, strlen(recvline), recvline);
 
-        while((n = read(connfd, recvline, 256) > 0))
+        while((n = read(connfd, recvline, 4092) > 0))
         {
             //printf("read: %d -- buff_szie : %d, buff: %s \n", n, strlen(recvline), recvline);
             // printf("debug line49");std::cout<<std::endl;
@@ -76,7 +76,7 @@ std::string receive_message(std::string listen_port)
 
             close(listenfd);
 
-            std::cout << "debug L79" << std::endl;
+            // std::cout << "debug L79" << std::endl;
 
             return str;
         }

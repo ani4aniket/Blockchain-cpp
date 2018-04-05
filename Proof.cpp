@@ -13,9 +13,8 @@ Proof::Proof()
 
 Proof::Proof(std::string proof_str)
 : proof_str(proof_str)
-, proof_ll(0)
 {
-    
+    proof_ll = std::stoull(proof_str);
 }
 
 Proof::~Proof()
@@ -25,7 +24,7 @@ Proof::~Proof()
 
 std::string Proof::string()
 {
-
+    return proof_str;
 }
 
 Proof::operator std::string() const
@@ -38,7 +37,7 @@ void Proof::change()
     std::stringstream sstream;
     sstream << proof_ll++;
     proof_str = sstream.str();
-    // std::cout << "current proof is " << proof_str << std::endl;
+    std::cout << "current proof is " << proof_str << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& os, const Proof& proof)

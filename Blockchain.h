@@ -59,15 +59,17 @@ class Block {
 
     Block(Proof* proof, const std::vector<Transaction*>* transactions, size_t previous_hash, int index);//const ?
 
-    Block(int index, int timestamp, Proof* proof, int previous_hash, std::vector<Transaction*> transactions);
+    Block(size_t index, size_t timestamp, Proof* proof, size_t previous_hash, std::vector<Transaction*> transactions);
 
     virtual ~Block();
 
-    Proof* get_proof() const;
+    const Proof* get_proof() const;
 
     size_t get_previous_hash() const;
 
     std::string string() const;
+
+    int get_index() const;
 
     private:
 
@@ -135,13 +137,13 @@ void new_block(Proof* proof);
 
 int new_transaction(Transaction* transaction);
 
-size_t hash(std::string str);
+size_t hash(const std::string str);
 
-size_t hash(size_t sizet);
+size_t hash(const size_t sizet);
 
-size_t hash(Block* block);
+size_t hash(const Block* block);
 
-size_t hash(Proof* proof);
+size_t hash(const Proof* proof);
 
 Block* last_block();
 
