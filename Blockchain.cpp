@@ -17,7 +17,7 @@ Blockchain::Blockchain()
 Blockchain::Blockchain(Node* node)
 :self(*node)
 {
-    //Blockchain(); why?
+    //Blockchain(); why creat two difference instance?
     new_block(new Proof());
 }
 
