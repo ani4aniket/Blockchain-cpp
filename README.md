@@ -1,5 +1,5 @@
 # Blockchain-c-
-a simple Blockchain with c++
+a simple Blockchain with c++<br>
 refered to https://github.com/dvf/blockchain
 
 usage:
