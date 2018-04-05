@@ -25,8 +25,7 @@ Block::Block(size_t index, size_t timestamp, Proof* proof, size_t previous_hash,
 , previous_hash(previous_hash)
 , transactions(transactions)
 {
-    // std::cout << "debug L28 index: " << index << " previous_hash: " << previous_hash << std::endl;
-    // std::cout << "debug L29: " << this->previous_hash << std::endl;
+
 }
 
 Block::~Block()

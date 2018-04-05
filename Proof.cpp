@@ -37,7 +37,7 @@ void Proof::change()
     std::stringstream sstream;
     sstream << proof_ll++;
     proof_str = sstream.str();
-    std::cout << "current proof is " << proof_str << std::endl;
+    // std::cout << "current proof is " << proof_str << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& os, const Proof& proof)

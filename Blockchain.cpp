@@ -11,14 +11,12 @@ std::string receive_message(std::string listen_port);
 
 Blockchain::Blockchain()
 {
-    // std::cout << "debug l14 " << this << std::endl;
     new_block(new Proof());
 }
 
 Blockchain::Blockchain(Node* node)
 :self(*node)
 {
-    // std::cout << "debug l21 " << this << std::endl;
     //Blockchain(); why?
     new_block(new Proof());
 }
@@ -38,37 +36,18 @@ bool Blockchain::register_node(Node* node)
 
 bool Blockchain::valid_chain(std::list<Block*> chain)//static or member?
 {
-    std::cout << "debug L41 " << chain.size() << std::endl;
-    // std::cout << "debug L42 " << (*chain.cend())->
     for(auto it = ++(chain.cbegin()), last_it = chain.cbegin(); it != chain.cend(); it++, last_it++)
     {
-        std::cout << "debug L45: " << (*it)->string() << std::endl;
-        std::cout << "debug L46 " << (*last_it)->get_index() << " " << (*it)->get_previous_hash() << " = " << hash(*last_it) << std::endl;
-        std::cout << "debug L47 " << std::endl; 
         if((*it)->get_previous_hash() != hash(*last_it))
         {
-            std::cout << "debug L50" << std::endl;
             return false;
         }
-
-        std::cout << "debug L54" << std::endl;
-
-        auto v1 = hash((*it)->get_proof());
-        std::cout << "--" << std::endl;
-        auto v2 = (*it)->get_previous_hash();
-        std::cout << "--" << std::endl;
-        auto v3 = valid_proof(v1, v2);
-
-        std::cout << "debug L60" << std::endl;
 
         if(!valid_proof(hash((*it)->get_proof()), (*it)->get_previous_hash()))
         {
-            std::cout <<"debug L51" << std::endl;
             return false;
         }
     }
-
-    std::cout << "debug L55 return true" << std::endl;
 
     return true;
 }
@@ -76,15 +55,10 @@ bool Blockchain::valid_chain(std::list<Block*> chain)//static or member?
 //TODO (return replaced): return true: Our chain was replaced, return false: Our chain is authoritative
 bool Blockchain::resolve_conflicts()
 {
-    std::cout << "debug L58" << std::endl;
     for(auto it = nodes.begin(); it != nodes.end(); it++)
     {
-        // std::cout << "debug L61" << std::endl;
         send_message((*it)->get_ip(), (*it)->get_port(), "full_chain " + self.get_ip() + std::string(" ") + std::string("6001"), "", "");
-        // std::cout << "debug L63" << std::endl;
         std::string full_chain = receive_message("6001");
-
-        // std::cout << "Blockchain.cpp debug l66 " << full_chain << std::endl;
 
         std::list<Block*> blocks;
 
@@ -102,11 +76,8 @@ bool Blockchain::resolve_conflicts()
         std::smatch m_chain;
         std::regex reg_block("(index[\\s\\S]+?\\n\\n)");
 
-        // std::cout << "debug L84 " << std::regex_search(full_chain, m_chain, reg_block) << std::endl;
-
         while(std::regex_search(full_chain, m_chain, reg_block))
         {
-            // std::cout << "debug L86 " << m_chain.str(1) <<std::endl;
             //std::regex_search(m_chain.str(1), m_index, index);使用了被删除的函数？
             std::string m_chain_str1 = m_chain.str(1);
             std::regex_search(m_chain_str1, m_index, index);
@@ -136,8 +107,6 @@ bool Blockchain::resolve_conflicts()
 
             while(std::regex_search(transactions, m_line, one_line))
             {
-                // std::cout << "debug L110 " << m_line.str(1) <<std::endl;
-
                 std::string m_line_str1 = m_line.str(1);
                 std::regex_search(m_line_str1, m_sender, sender);
                 std::regex_search(m_line_str1, m_recipient, recipient);
@@ -147,40 +116,15 @@ bool Blockchain::resolve_conflicts()
                 // std::cout << "m_recipient match is: \n" << m_recipient.str(1) << std::endl;
                 // std::cout << "m_mount match is: \n" << m_mount.str(1) << std::endl;
 
-                // std::cout << "debug L129+" << std::endl;
-                // std::cout << " " << stoi(m_mount.str(1)) << std::endl;
-                // std::cout << "debug L131-" << std::endl;
-
                 transaction_vector->push_back(new Transaction(m_sender.str(1), m_recipient.str(1), stoi(m_mount.str(1))));
 
                 transactions = m_line.suffix().str();
-
-                // std::cout << "debug L137+" << std::endl;
-                // std::regex_search(transactions, m_line, one_line);
-                // std::cout << "debug L139-" << std::endl;
             }
 
-            // std::cout << "debug L142+" << std::endl;
-            // auto v1 = stoi(m_index.str(1));
-            // std::cout << "--" << std::endl;
-            // auto v2 = stoi(m_timestamp.str(1));
-            // std::cout << "--" << std::endl;
-            // auto v3 = new Proof(m_proof.str(1));
-            // std::cout << "--" << m_previous_hash.str(1) << std::endl;
-            // auto v4 = std::stoull(m_previous_hash.str(1).c_str());
-            // std::cout << "--" << v4 << std::endl;
-            // std::stringstream ss;
-            // ss << m_previous_hash.str(1);
             blocks.push_back(new Block(std::stoull(m_index.str(1)), std::stoull(m_timestamp.str(1)), new Proof(m_proof.str(1)), std::stoull(m_previous_hash.str(1)), *transaction_vector));
-            // auto b = new Block(v1, v2, v3, v4, *transaction_vector);
-            // std::cout << "--" << std::endl;
-            // blocks.push_back(b);
-            // std::cout << "debug L144-" << std::endl;
 
             full_chain = m_chain.suffix().str();
         }
-
-        std::cout << "debug L160: " << blocks.size() << " " << this->chain.size() << std::endl;
 
         if(blocks.size() > this->chain.size() && valid_chain(blocks))
         {
@@ -195,9 +139,7 @@ void Blockchain::new_block(Proof* proof)
 {
     Block* block = new Block(proof, &current_transactions, hash(last_block()), chain.size() + 1);
     current_transactions.clear();
-    // std::cout << "debug l133: " << chain.size() << " " << this << std::endl;
     chain.push_back(block);
-    // std::cout << "debug l135: " << chain.size() << " " << this << std::endl;
 }
 
 int Blockchain::new_transaction(Transaction* transaction)
@@ -229,7 +171,6 @@ size_t Blockchain::hash(const Block* block)
 
 size_t Blockchain::hash(const Proof* proof)
 {
-    std::cout << "debug L216 " << *proof << std::endl;
     std::hash<std::string> hashfun_str;
     return hashfun_str(static_cast<std::string>(*proof));
 }
@@ -255,15 +196,12 @@ Proof* Blockchain::proof_of_work()
 
 bool Blockchain::valid_proof(size_t hash1, size_t hash2)
 {
-    std::cout << "debug L245245 " << hash1 << " " << hash2 << std::endl;
     size_t hash3 = hash((hash1 / 2) + (hash2 / 2));
-    std::cout << "debug line 109, hash3 is " << hash3 << " ** " << hash3 / 100 << std::endl;
     return (hash3 / 100 * 100) == hash3;
 }
 
 std::vector<std::string> Blockchain::get_chain()
 {
-    // std::cout << "debug l196: " << chain.size() << " " << this << std::endl;
     std::vector<std::string> str_vector;
     std::stringstream ss;
     for(auto it = chain.begin(); it != chain.end(); it++)//for :in?
