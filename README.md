@@ -1,5 +1,6 @@
 # Blockchain-c-
 a simple Blockchain with c++
+refered to https://github.com/dvf/blockchain
 
 usage:
 
