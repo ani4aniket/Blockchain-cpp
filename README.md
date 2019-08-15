@@ -1,4 +1,4 @@
-# Blockchain-c-
+# Blockchain-cpp
 a simple Blockchain with c++<br>
 refered to https://github.com/dvf/blockchain
 
