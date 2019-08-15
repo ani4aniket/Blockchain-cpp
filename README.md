@@ -5,8 +5,8 @@ refered to https://github.com/dvf/blockchain
 usage:
 
 ## 1.build it
-    * >> run "g++ *.cpp" in Blockchain-c-/ path, it will create a a.exe in Blockchain-c-/ path.<br>
-    * >> run "g++ *.cpp" in Blockchain-c-/user/ path, it will create a a.exe in Blockchain-c-/user/ path.<br>
+   * >> run "g++ *.cpp" in Blockchain-c-/ path, it will create a a.exe in Blockchain-c-/ path.<br>
+   * >> run "g++ *.cpp" in Blockchain-c-/user/ path, it will create a a.exe in Blockchain-c-/user/ path.<br>
 
 ## 2.run it
     * >> run "./a.exe 5000" in Blockchain-c-/ path, it will startup a node on 127.0.0.1:5000.<br>
